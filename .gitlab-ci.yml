@@ -1,0 +1,72 @@
+stages:
+  - build
+ # - review
+ # - deploy
+ # - cleanup
+
+workflow:
+  rules:
+    - if: $CI_COMMIT_TAG
+      variables:
+        IMAGE_TAG: $CI_COMMIT_TAG
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      variables:
+        IMAGE_TAG: "latest"
+    - if: $CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH
+      variables:
+        IMAGE_TAG: $CI_COMMIT_SHA
+    - when: always
+
+frontend:
+  stage: build
+  trigger:
+    include:
+      - "frontend/.gitlab-ci.yml"
+    strategy: depend
+  only:
+    changes:
+      - frontend/**/*
+
+#backend:
+#  stage: build
+#  trigger:
+#    include:
+#      - "backend/.gitlab-ci.yml"
+#    strategy: depend
+#  only:
+#    changes:
+#      - backend/**/*
+
+#variables:
+#  ARGOCD_REVIEW_APPLICATION_NAME: review-app-$CI_MERGE_REQUEST_IID
+#  ARGOCD_PROD_APPLICATION_NAME: momo-store
+
+#.argocd:
+#  image: "argoproj/argocd:v2.5.2"
+#  before_script:
+#    - argocd login ${ARGOCD_SERVER_URL} --insecure --grpc-web --username ${ARGOCD_USERNAME} --password ${ARGOCD_PASSWORD}
+
+#review-app:
+#  extends: .argocd
+#  stage: review
+#  script:
+#    - argocd app sync ${ARGOCD_REVIEW_APPLICATION_NAME}
+#    - argocd app wait ${ARGOCD_REVIEW_APPLICATION_NAME}
+#  environment:
+#    name: review/$CI_COMMIT_REF_NAME
+#    url: http://${ARGOCD_REVIEW_APPLICATION_NAME}.momo-store.antonborodinskiy.ru
+#  rules:
+#    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
+
+#deploy:
+#  extends: .argocd
+#  stage: deploy
+#  script:
+#    - argocd app sync ${ARGOCD_PROD_APPLICATION_NAME}
+#    - argocd app wait ${ARGOCD_PROD_APPLICATION_NAME}
+#  environment:
+#    name: momo-store
+#    url: http://momo-store.glebfedotov.ru
+#  rules:
+#    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+#      when: manual
