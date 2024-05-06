@@ -1,0 +1,31 @@
+stages:
+  - build
+  - test
+
+variables:
+  IMAGE_TAG: $CI_COMMIT_SHA
+
+build-frontend:
+  stage: build
+  image:
+    name: gcr.io/kaniko-project/executor:v1.9.0-debug
+    entrypoint: [""]
+  script:
+    - /kaniko/executor
+      --context "${CI_PROJECT_DIR}/frontend"
+      --dockerfile "${CI_PROJECT_DIR}/frontend/Dockerfile"
+      --destination "${CI_REGISTRY_IMAGE}/momo-frontend:${IMAGE_TAG}"
+      --cache=true
+      --cache-ttl=6h
+
+sonarqube-sast:
+  stage: test
+  image: sonarsource/sonar-scanner-cli:latest
+  script:
+    - >
+      sonar-scanner
+      -Dsonar.qualitygate.wait=true
+      -Dsonar.projectKey="${SONAR_FRONTEND}"
+      -Dsonar.sources="${CI_PROJECT_DIR}/frontend"
+      -Dsonar.host.url="${SONARQUBE_URL}"
+      -Dsonar.login="${SONAR_LOGIN}"
