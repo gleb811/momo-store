@@ -27,15 +27,15 @@ frontend:
     changes:
       - frontend/**/*
 
-#backend:
-#  stage: build
-#  trigger:
-#    include:
-#      - "backend/.gitlab-ci.yml"
-#    strategy: depend
-#  only:
-#    changes:
-#      - backend/**/*
+backend:
+  stage: build
+  trigger:
+    include:
+      - "backend/.gitlab-ci.yml"
+    strategy: depend
+  only:
+    changes:
+      - backend/**/*
 
 #variables:
 #  ARGOCD_REVIEW_APPLICATION_NAME: review-app-$CI_MERGE_REQUEST_IID
@@ -54,7 +54,7 @@ frontend:
 #    - argocd app wait ${ARGOCD_REVIEW_APPLICATION_NAME}
 #  environment:
 #    name: review/$CI_COMMIT_REF_NAME
-#    url: http://${ARGOCD_REVIEW_APPLICATION_NAME}.momo-store.antonborodinskiy.ru
+#    url: http://${ARGOCD_REVIEW_APPLICATION_NAME}.momo-store.glebfedotov.ru
 #  rules:
 #    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
 
