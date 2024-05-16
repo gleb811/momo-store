@@ -9,4 +9,4 @@ FROM nginx:stable-alpine
 COPY --from=builder /app/dist /usr/share/nginx/html
 COPY nginx.conf /usr/share/nginx/nginx.conf
 EXPOSE 80
-CMD ["nginx", "-c", "/usr/share/nginx/nginx.conf;"]
+CMD ["nginx", "-c", "/usr/share/nginx/nginx.conf"]
