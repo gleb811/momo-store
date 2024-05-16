@@ -8,7 +8,7 @@ RUN npm run build
 
 FROM nginx:stable-alpine
 COPY --from=builder /app/dist /usr/share/nginx/html
-RUN pwd
+RUN ls
 RUN cat nginx.conf
 COPY nginx.conf /etc/nginx/
 RUN cat /etc/nginx/nginx.conf
