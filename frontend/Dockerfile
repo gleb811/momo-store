@@ -1,14 +1,13 @@
-FROM node:16 as builder
+FROM node:16.20.0-alpine3.18 as builder
 WORKDIR /app
-COPY ["package.json", "package-lock.json", "./"]
+ADD package.json package-lock.json ./
 RUN npm install
-COPY . .
-RUN rm nginx.conf
+ADD . .
+RUN rm default.conf
 RUN npm run build
 
-FROM nginx:stable-alpine
-COPY --from=builder /app/dist /usr/share/nginx/html
-ADD ./nginx.conf /etc/nginx
-RUN ls /etc/nginx/
+FROM nginx:stable-alpine3.17-slim
+WORKDIR /app
+ADD default.conf /etc/nginx/conf.d/default.conf
+COPY --from=builder /app/dist/ ./frontend
 EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
