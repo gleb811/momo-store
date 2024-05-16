@@ -3,7 +3,6 @@ WORKDIR /app
 COPY ["package.json", "package-lock.json", "./"]
 RUN npm install
 COPY . .
-RUN rm default.conf
 RUN npm run build
 
 FROM nginx:stable-alpine
