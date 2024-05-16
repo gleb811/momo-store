@@ -3,7 +3,7 @@ WORKDIR /app
 ADD package.json package-lock.json ./
 RUN npm install
 ADD . .
-RUN rm default.conf
+RUN rm nginx.conf
 RUN npm run build
 
 FROM nginx:stable-alpine3.17-slim
