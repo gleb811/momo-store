@@ -10,4 +10,5 @@ FROM nginx:stable-alpine3.17-slim
 WORKDIR /app
 ADD default.conf /etc/nginx/conf.d/default.conf
 COPY --from=builder /app/dist/ ./frontend
+ADD qqq /etc/nginx/
 EXPOSE 80
