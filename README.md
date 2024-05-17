@@ -1,17 +1,15 @@
-# Momo Store aka Пельменная №2
+Пельменная
+Репозиторий для хранения кода приложения, из которого собираются два контейнера momo-backend и momo-frontend Приложение доступно по адресу http://momo-store.glebfedotov.ru/
 
-<img width="900" alt="image" src="https://user-images.githubusercontent.com/9394918/167876466-2c530828-d658-4efe-9064-825626cc6db5.png">
+Сборка
+Сборка реализована через gitlab CI. Сам build происходит через kaniko с кэшированием. Тестирование кода выполнено через sonarqube Для go дополнительно выполняются unittest
 
-## Frontend
+Deploy
+Приложение деплоится в K8S кластер, который развернут в Yandex.Cloud с использованием Managed Kubernetes. Continuous Deployment реализован через ArgoCD, который поднимается в кластере K8S. При создании merge request в branch, ArgoCD создаст Review App что позволит проверить работоспособность приложния.
 
-```bash
-npm install
-NODE_ENV=production VUE_APP_API_URL=http://localhost:8081 npm run serve
-```
+Инфраструктура
+https://gitlab.praktikum-services.ru/std-024-07/momo-store-infrastructure
 
-## Backend
-
-```bash
-go run ./cmd/api
-go test -v ./... 
+Helm
+https://gitlab.praktikum-services.ru/std-024-07/momo-store-helm
 ```
