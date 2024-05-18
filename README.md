@@ -1,3 +1,10 @@
+ArgoCD:
+username: admin
+password: GvF7018198
+Grafana:
+username: admin
+password: prom-operator
+
 Пельменная
 Репозиторий для хранения кода приложения, из которого собираются два контейнера momo-backend и momo-frontend Приложение доступно по адресу http://momo-store.glebfedotov.ru/
 
